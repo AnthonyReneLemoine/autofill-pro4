@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>AutoFill Pro</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 280px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f0f1a;
+      color: #e0e0f0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a3e 0%, #2d1b69 100%);
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid #333;
+    }
+
+    .header h1 {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #9090bb;
+      margin-top: 4px;
+    }
+
+    .section {
+      padding: 14px 16px;
+    }
+
+    .section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6666aa;
+      margin-bottom: 8px;
+    }
+
+    .btn-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 14px;
+      margin-bottom: 8px;
+      border: 1px solid #333355;
+      border-radius: 8px;
+      background: #16162a;
+      color: #e0e0f0;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+    }
+
+    .btn-profile:hover {
+      background: #22224a;
+      border-color: #5555aa;
+      transform: translateX(2px);
+    }
+
+    .btn-profile .icon {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .btn-profile .label {
+      flex: 1;
+    }
+
+    .btn-profile .label strong {
+      display: block;
+      font-weight: 600;
+    }
+
+    .btn-profile .label small {
+      color: #7070aa;
+      font-size: 11px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #222240;
+      margin: 2px 0 14px;
+    }
+
+    .btn-options {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 9px 14px;
+      border: none;
+      background: transparent;
+      color: #7070aa;
+      font-size: 12px;
+      cursor: pointer;
+      border-top: 1px solid #1a1a30;
+      transition: color 0.15s;
+    }
+
+    .btn-options:hover {
+      color: #aaaadd;
+    }
+
+    .hint {
+      padding: 0 16px 14px;
+      font-size: 11px;
+      color: #555577;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🖊️ AutoFill Pro</h1>
+    <p>Clic droit sur la page → Remplir le formulaire</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Remplir depuis ce popup</div>
+
+    <button class="btn-profile" data-profile="perso">
+      <span class="icon">👤</span>
+      <span class="label">
+        <strong>Profil Personnel</strong>
+        <small>Jean Dupont · Paris</small>
+      </span>
+    </button>
+
+    <button class="btn-profile" data-profile="pro">
+      <span class="icon">🏛️</span>
+      <span class="label">
+        <strong>Profil Professionnel</strong>
+        <small>Entreprise Exemple · Entreprise Exemple</small>
+      </span>
+    </button>
+  </div>
+
+  <div class="hint">
+    💡 Les champs déjà remplis ne seront pas écrasés.
+  </div>
+
+  <button class="btn-options" id="btn-options">
+    ⚙️ Gérer les profils &amp; personnaliser…
+  </button>
+
+  <script src="profiles.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

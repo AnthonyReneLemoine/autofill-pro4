@@ -1,0 +1,11 @@
+# AutoFill Pro – Snippets personnels
+# Une info par ligne. Deux formats :
+#   clé = valeur      → le menu affiche "clé" et insère "valeur"
+#   texte libre       → le menu affiche et insère directement
+# Les lignes commençant par # sont ignorées.
+
+redimensionne ces images en gardant le motif central en 550px de large pour 420px de haut, en 72dpi
+
+redimensionne cette image en gardant le motif central en 550px de large pour 420px de haut, en 72dpi
+
+fais moi un résumé complet de ce que on avait dit sur

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>AutoFill Pro – Options</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f0f1a;
+      color: #e0e0f0;
+      min-height: 100vh;
+    }
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 210px; background: #0b0b16;
+      border-right: 1px solid #1e1e38;
+      padding: 24px 0; position: fixed;
+      top: 0; left: 0; bottom: 0;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo {
+      font-size: 15px; font-weight: 700;
+      padding: 0 18px 20px;
+      border-bottom: 1px solid #1e1e38; color: #aaaaee;
+    }
+    .sidebar-logo span { font-size: 20px; margin-right: 8px; }
+    .nav { padding: 14px 0; flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 18px; font-size: 13px; color: #7777bb;
+      cursor: pointer; border-left: 3px solid transparent;
+      transition: all 0.15s; user-select: none;
+    }
+    .nav-item:hover { color: #ccccff; background: #12122a; }
+    .nav-item.active { color: #e0e0ff; border-left-color: #5555cc; background: #14143a; }
+    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+    /* ── Main ── */
+    .main { margin-left: 210px; flex: 1; padding: 30px 36px; max-width: 820px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .subtitle { color: #6666aa; font-size: 13px; margin-bottom: 24px; }
+
+    /* ── Cards ── */
+    .card {
+      background: #16162a; border: 1px solid #2a2a50;
+      border-radius: 12px; padding: 20px 22px; margin-bottom: 20px;
+    }
+    .card-title { font-size: 14px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    label { font-size: 11px; color: #7777bb; text-transform: uppercase; letter-spacing: 0.5px; }
+    input[type="text"], input[type="email"] {
+      background: #0f0f20; border: 1px solid #2a2a50; border-radius: 6px;
+      color: #e0e0f0; padding: 8px 10px; font-size: 13px;
+      outline: none; transition: border-color 0.15s; width: 100%;
+    }
+    input:focus { border-color: #5555cc; }
+
+    /* ── Snippet editor ── */
+    .snippet-toolbar { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+    textarea#snippets-editor {
+      width: 100%; height: 380px; background: #0a0a18;
+      border: 1px solid #2a2a50; border-radius: 8px;
+      color: #c0c0ff; font-family: "Cascadia Code","Fira Mono","Consolas",monospace;
+      font-size: 13px; line-height: 1.7; padding: 14px;
+      outline: none; resize: vertical; transition: border-color 0.15s;
+    }
+    textarea#snippets-editor:focus { border-color: #5555cc; }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 8px 16px; border-radius: 7px; font-size: 13px;
+      cursor: pointer; border: none; font-family: inherit;
+      transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: #3b3baa; color: white; }
+    .btn-primary:hover { background: #5555cc; }
+    .btn-secondary { background: #1e1e3a; color: #aaaadd; border: 1px solid #2a2a50; }
+    .btn-secondary:hover { background: #2a2a50; color: #e0e0ff; }
+    .btn-danger { background: #3a1a1a; color: #ff8888; border: 1px solid #5a2a2a; }
+    .btn-danger:hover { background: #4a2020; }
+    .btn-save-row { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+    .saved-msg { font-size: 12px; color: #4ade80; opacity: 0; transition: opacity 0.3s; }
+
+    /* ── Drop zone ── */
+    #import-input { display: none; }
+    .drop-zone {
+      border: 2px dashed #2a2a50; border-radius: 8px;
+      padding: 16px; text-align: center; font-size: 12px;
+      color: #5555aa; cursor: pointer; transition: all 0.2s; margin-bottom: 10px;
+    }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: #5555cc; color: #aaaaee; background: #12122a; }
+
+    .snippet-count { font-size: 11px; color: #555588; margin-left: auto; }
+
+    .info-box {
+      background: #0d132a; border: 1px solid #1e2a50;
+      border-radius: 8px; padding: 12px 14px;
+      font-size: 12px; color: #6677aa; line-height: 1.7; margin-bottom: 20px;
+    }
+    .info-box code { background: #1a1a38; padding: 1px 5px; border-radius: 3px; color: #9999ff; font-family: monospace; }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo"><span>🖊️</span>AutoFill Pro</div>
+    <nav class="nav">
+      <div class="nav-item active" data-page="snippets">
+        <span class="nav-icon">📋</span> Snippets
+      </div>
+      <div class="nav-item" data-page="perso">
+        <span class="nav-icon">👤</span> Profil Personnel
+      </div>
+      <div class="nav-item" data-page="pro">
+        <span class="nav-icon">🏛️</span> Profil Pro
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+    <!-- ════ SNIPPETS ════ -->
+    <section class="page active" id="page-snippets">
+      <h2>📋 Snippets – Textes rapides</h2>
+      <p class="subtitle">Chaque ligne active apparaît dans le clic droit → <em>Insérer un snippet</em>.</p>
+
+      <div class="info-box">
+        💡 <strong>Deux formats :</strong><br>
+        &nbsp;&nbsp;• <code>clé = valeur</code> → le menu affiche la clé, insère la valeur dans le champ.<br>
+        &nbsp;&nbsp;• <code>texte libre</code> → affiché et inséré tel quel.<br>
+        &nbsp;&nbsp;• Les lignes commençant par <code>#</code> sont des commentaires (ignorées).<br>
+        &nbsp;&nbsp;• Maximum 50 entrées actives.
+      </div>
+
+      <div class="snippet-toolbar">
+        <button class="btn btn-secondary" id="btn-import">📂 Importer .txt…</button>
+        <input type="file" id="import-input" accept=".txt,text/plain">
+        <button class="btn btn-secondary" id="btn-export">💾 Exporter .txt</button>
+        <button class="btn btn-danger"     id="btn-reset-snippets">↩ Réinitialiser</button>
+        <span class="snippet-count" id="snippet-count"></span>
+      </div>
+
+      <div class="drop-zone" id="drop-zone">
+        ⬆️ Glissez-déposez un fichier <strong>.txt</strong> ici pour l'importer
+      </div>
+
+      <textarea id="snippets-editor" spellcheck="false"></textarea>
+
+      <div class="btn-save-row">
+        <button class="btn btn-primary" id="btn-save-snippets">💾 Enregistrer &amp; actualiser le menu</button>
+        <span class="saved-msg" id="saved-snippets">✅ Menu mis à jour !</span>
+      </div>
+    </section>
+
+    <!-- ════ PROFIL PERSO ════ -->
+    <section class="page" id="page-perso">
+      <h2>👤 Profil Personnel</h2>
+      <p class="subtitle">Ces valeurs s'appliquent lors du remplissage automatique de formulaires.</p>
+
+      <div class="card">
+        <div class="card-title">🪪 Identité</div>
+        <div class="grid">
+          <div class="field"><label>Prénom</label><input type="text" id="p_prenom" placeholder="Jean"></div>
+          <div class="field"><label>Nom</label><input type="text" id="p_nom" placeholder="Dupont"></div>
+          <div class="field"><label>Civilité</label><input type="text" id="p_civilite" placeholder="M."></div>
+          <div class="field"><label>Date de naissance</label><input type="text" id="p_date_naissance" placeholder="01/01/1990"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📬 Contact</div>
+        <div class="grid">
+          <div class="field"><label>Email</label><input type="email" id="p_email" placeholder="jean.dupont@example.com"></div>
+          <div class="field"><label>Téléphone</label><input type="text" id="p_telephone" placeholder="06 xx xx xx xx"></div>
+          <div class="field"><label>Mobile</label><input type="text" id="p_mobile" placeholder="06 xx xx xx xx"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🏠 Adresse</div>
+        <div class="grid">
+          <div class="field"><label>Adresse ligne 1</label><input type="text" id="p_adresse" placeholder="10 rue Exemple"></div>
+          <div class="field"><label>Adresse ligne 2</label><input type="text" id="p_adresse2" placeholder="Appartement, bâtiment…"></div>
+          <div class="field"><label>Code postal</label><input type="text" id="p_code_postal" placeholder="75000"></div>
+          <div class="field"><label>Ville</label><input type="text" id="p_ville" placeholder="Paris"></div>
+          <div class="field"><label>Pays</label><input type="text" id="p_pays" placeholder="France"></div>
+          <div class="field"><label>Région</label><input type="text" id="p_region" placeholder="Île-de-France"></div>
+        </div>
+      </div>
+      <div class="btn-save-row">
+        <button class="btn btn-primary" id="save-perso">💾 Enregistrer</button>
+        <span class="saved-msg" id="saved-perso">✅ Enregistré !</span>
+      </div>
+    </section>
+
+    <!-- ════ PROFIL PRO ════ -->
+    <section class="page" id="page-pro">
+      <h2>🏛️ Profil Professionnel</h2>
+      <p class="subtitle">Entreprise Exemple / Entreprise Exemple.</p>
+
+      <div class="card">
+        <div class="card-title">🪪 Identité pro</div>
+        <div class="grid">
+          <div class="field"><label>Prénom</label><input type="text" id="pro_prenom" placeholder="Jean"></div>
+          <div class="field"><label>Nom</label><input type="text" id="pro_nom" placeholder="Dupont"></div>
+          <div class="field"><label>Email pro</label><input type="email" id="pro_email" placeholder="jean.dupont.pro@example.com"></div>
+          <div class="field"><label>Téléphone pro</label><input type="text" id="pro_telephone" placeholder=""></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🏢 Structure</div>
+        <div class="grid">
+          <div class="field"><label>Organisation</label><input type="text" id="pro_organisation" placeholder="Entreprise Exemple"></div>
+          <div class="field"><label>Employeur</label><input type="text" id="pro_entreprise" placeholder="Entreprise Exemple"></div>
+          <div class="field"><label>Poste / Fonction</label><input type="text" id="pro_poste" placeholder="Employé"></div>
+          <div class="field"><label>Service</label><input type="text" id="pro_service" placeholder="Accueil / Billetterie"></div>
+          <div class="field"><label>Statut</label><input type="text" id="pro_statut" placeholder="Salarié"></div>
+          <div class="field"><label>SIRET</label><input type="text" id="pro_siret" placeholder=""></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📬 Adresse pro</div>
+        <div class="grid">
+          <div class="field"><label>Adresse</label><input type="text" id="pro_adresse" placeholder="Entreprise Exemple"></div>
+          <div class="field"><label>Code postal</label><input type="text" id="pro_code_postal" placeholder="75000"></div>
+          <div class="field"><label>Ville</label><input type="text" id="pro_ville" placeholder="Paris"></div>
+          <div class="field"><label>Pays</label><input type="text" id="pro_pays" placeholder="France"></div>
+        </div>
+      </div>
+      <div class="btn-save-row">
+        <button class="btn btn-primary" id="save-pro">💾 Enregistrer</button>
+        <span class="saved-msg" id="saved-pro">✅ Enregistré !</span>
+      </div>
+    </section>
+
+  </main>
+</div>
+<script src="options.js"></script>
+</body>
+</html>
